@@ -13,7 +13,7 @@ const formInputs = [email, country, postalCode, password, confirmPassword];
 // Validate email
 email.addEventListener(`input`, () => {
   email.setCustomValidity(``);
-  country.classList.remove(`invalid`);
+  email.classList.remove(`invalid`);
 
   if (email.validity.typeMismatch) {
     email.classList.add(`invalid`);
