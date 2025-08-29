@@ -23,7 +23,7 @@ email.addEventListener(`input`, () => {
     email.setCustomValidity("Can't leave blank");
   }
   // Trigger browser validation popup (and show our custom msg if invalid)
-  if (email.reportValidity()) {
+  if (!email.reportValidity()) {
     return null; // stop if invalid
   }
 });
@@ -44,19 +44,54 @@ country.addEventListener(`input`, () => {
     country.classList.add("invalid");
   }
 
-  country.reportValidity();
+  // Trigger browser validation popup (and show our custom msg if invalid)
+  if (!country.reportValidity()) {
+    return null; // stop if invalid
+  }
+});
+
+// validate postal code
+postalCode.addEventListener(`input`, (event) => {
+  postalCode.setCustomValidity(``);
+  postalCode.classList.remove(`invalid`);
+
+  const onlyNumberRegex = /^\d{5}(-\d{4})?$/;
+
+  if (postalCode.validity.valueMissing) {
+    postalCode.classList.add(`invalid`);
+    postalCode.setCustomValidity("Postal Code is required!");
+  } else if (!onlyNumberRegex.test(postalCode.value)) {
+    postalCode.setCustomValidity("Postal code examples 12345, 12345-6789.");
+    postalCode.classList.add("invalid");
+  }
+
+  // Trigger browser validation popup (and show our custom msg if invalid)
+  if (!postalCode.reportValidity()) {
+    return null; // stop if invalid
+  }
 });
 
 form.addEventListener("submit", (event) => {
-  event.preventDefault();
+  let isValid = true;
   if (!email.validity.valid) {
-    email.setCustomValidity("Can't leave blank");
+    email.setCustomValidity("Email can't leave blank");
     email.reportValidity();
+    isValid = false;
+    event.preventDefault();
     return;
   }
   if (!country.validity.valid) {
-    country.setCustomValidity("Can't leave blank");
+    country.setCustomValidity("country can't leave blank");
     country.reportValidity();
+    isValid = false;
+    event.preventDefault();
+    return;
+  }
+  if (!postalCode.validity.valid) {
+    postalCode.setCustomValidity(`Postal code can't be blank`);
+    postalCode.reportValidity();
+    isValid = false;
+    event.preventDefault();
     return;
   }
 });
