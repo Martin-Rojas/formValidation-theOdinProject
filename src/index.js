@@ -20,7 +20,7 @@ email.addEventListener(`input`, () => {
     email.setCustomValidity("I am expecting an email address!");
   } else if (email.validity.valueMissing) {
     email.classList.add(`invalid`);
-    email.setCustomValidity("Can't leave blank");
+    email.setCustomValidity("Email can't leave blank");
   }
   // Trigger browser validation popup (and show our custom msg if invalid)
   if (!email.reportValidity()) {
@@ -70,7 +70,52 @@ postalCode.addEventListener(`input`, (event) => {
     return null; // stop if invalid
   }
 });
+// Validate the password
+password.addEventListener(`input`, () => {
+  password.setCustomValidity(``);
+  password.classList.remove(`invalid`);
 
+  // rule one regx at least 8 chars, 1 letter, 1 number
+  const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  if (password.validity.valueMissing) {
+    password.setCustomValidity("Password is required!");
+    password.classList.add("invalid");
+  } else if (!strongPasswordRegex.test(password.value)) {
+    password.setCustomValidity(
+      "Password must be at least 8 characters, include a letter and a number."
+    );
+    password.classList.add("invalid");
+  }
+
+  // Trigger browser validation popup (and show our custom msg if invalid)
+  if (!password.reportValidity()) {
+    return null; // stop if invalid
+  }
+});
+
+// validate consfirm password
+confirmPassword.addEventListener(`input`, () => {
+  confirmPassword.setCustomValidity(``);
+  confirmPassword.classList.remove(`invalid`);
+
+  if (confirmPassword.validity.valueMissing) {
+    confirmPassword.setCustomValidity("Please confirm your password!");
+    confirmPassword.classList.add("invalid");
+  } else if (confirmPassword.value !== password.value) {
+    confirmPassword.setCustomValidity("Passwords do not match!");
+    confirmPassword.classList.add("invalid");
+  }
+
+  // Trigger browser validation popup (and show our custom msg if invalid)
+  if (!confirmPassword.reportValidity()) {
+    return null; // stop if invalid
+  }
+});
+
+/* Validate the field after click the submit btn
+   if one of the fields is invalid it will throw an error message to 
+   the user*/
 form.addEventListener("submit", (event) => {
   let isValid = true;
   if (!email.validity.valid) {
@@ -81,7 +126,7 @@ form.addEventListener("submit", (event) => {
     return;
   }
   if (!country.validity.valid) {
-    country.setCustomValidity("country can't leave blank");
+    country.setCustomValidity("Country can't leave blank");
     country.reportValidity();
     isValid = false;
     event.preventDefault();
@@ -90,6 +135,22 @@ form.addEventListener("submit", (event) => {
   if (!postalCode.validity.valid) {
     postalCode.setCustomValidity(`Postal code can't be blank`);
     postalCode.reportValidity();
+    isValid = false;
+    event.preventDefault();
+    return;
+  }
+
+  if (!password.validity.valid) {
+    password.setCustomValidity(`Pasword can't be blank`);
+    password.reportValidity();
+    isValid = false;
+    event.preventDefault();
+    return;
+  }
+
+  if (!confirmPassword.validity.valid) {
+    confirmPassword.setCustomValidity(`Confirm password  can't be blank`);
+    confirmPassword.reportValidity();
     isValid = false;
     event.preventDefault();
     return;
