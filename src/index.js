@@ -10,10 +10,15 @@ const confirmPassword = document.getElementById(`confirm-password`);
 // Validate each field value
 const formInputs = [email, country, postalCode, password, confirmPassword];
 
+// reset custom message and remove class "invalid"
+function resetInput(input) {
+  input.setCustomValidity(``);
+  input.classList.remove(`invalid`);
+}
+
 // Validate email
 email.addEventListener(`input`, () => {
-  email.setCustomValidity(``);
-  email.classList.remove(`invalid`);
+  resetInput(email);
 
   if (email.validity.typeMismatch) {
     email.classList.add(`invalid`);
@@ -30,8 +35,7 @@ email.addEventListener(`input`, () => {
 
 // Validate country
 country.addEventListener(`input`, () => {
-  country.setCustomValidity(``);
-  country.classList.remove(`invalid`);
+  resetInput(country);
 
   // Regex: only letters and spaces
   const regex = /^[A-Za-z\s]+$/;
@@ -51,9 +55,8 @@ country.addEventListener(`input`, () => {
 });
 
 // validate postal code
-postalCode.addEventListener(`input`, (event) => {
-  postalCode.setCustomValidity(``);
-  postalCode.classList.remove(`invalid`);
+postalCode.addEventListener(`input`, () => {
+  resetInput(postalCode);
 
   const onlyNumberRegex = /^\d{5}(-\d{4})?$/;
 
@@ -72,8 +75,7 @@ postalCode.addEventListener(`input`, (event) => {
 });
 // Validate the password
 password.addEventListener(`input`, () => {
-  password.setCustomValidity(``);
-  password.classList.remove(`invalid`);
+  resetInput(password);
 
   // rule one regx at least 8 chars, 1 letter, 1 number
   const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -96,8 +98,7 @@ password.addEventListener(`input`, () => {
 
 // validate consfirm password
 confirmPassword.addEventListener(`input`, () => {
-  confirmPassword.setCustomValidity(``);
-  confirmPassword.classList.remove(`invalid`);
+  resetInput(confirmPassword);
 
   if (confirmPassword.validity.valueMissing) {
     confirmPassword.setCustomValidity("Please confirm your password!");
