@@ -117,43 +117,32 @@ confirmPassword.addEventListener(`input`, () => {
 /* Validate the field after click the submit btn
    if one of the fields is invalid it will throw an error message to 
    the user*/
+function validateField(field, message, event) {
+  if (!field.validity.valid) {
+    field.setCustomValidity(message);
+    field.reportValidity();
+    event.preventDefault(); // stops form submission
+    return false; // this field is invalid
+  }
+  return true; // this field passed
+}
+
 form.addEventListener("submit", (event) => {
-  let isValid = true;
-  if (!email.validity.valid) {
-    email.setCustomValidity("Email can't leave blank");
-    email.reportValidity();
-    isValid = false;
-    event.preventDefault();
-    return;
+  if (!validateField(email, "Email can't leave blank", event)) {
+    return; // stop here if email invalid
   }
-  if (!country.validity.valid) {
-    country.setCustomValidity("Country can't leave blank");
-    country.reportValidity();
-    isValid = false;
-    event.preventDefault();
-    return;
+  if (!validateField(country, "Country can't leave blank", event)) {
+    return; // stop here if country invalid
   }
-  if (!postalCode.validity.valid) {
-    postalCode.setCustomValidity(`Postal code can't be blank`);
-    postalCode.reportValidity();
-    isValid = false;
-    event.preventDefault();
-    return;
+  if (!validateField(postalCode, "Postal code can't leave blank", event)) {
+    return; // stop here if postal code invalid
   }
-
-  if (!password.validity.valid) {
-    password.setCustomValidity(`Pasword can't be blank`);
-    password.reportValidity();
-    isValid = false;
-    event.preventDefault();
-    return;
+  if (!validateField(password, "Password can't leave blank", event)) {
+    return; // stop here if password invalid
   }
-
-  if (!confirmPassword.validity.valid) {
-    confirmPassword.setCustomValidity(`Confirm password  can't be blank`);
-    confirmPassword.reportValidity();
-    isValid = false;
-    event.preventDefault();
-    return;
+  if (
+    !validateField(confirmPassword, "Confirm password can't leave blank", event)
+  ) {
+    return; // stop here if confirm password invalid
   }
 });
