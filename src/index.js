@@ -7,9 +7,6 @@ const postalCode = document.getElementById(`postal-code`);
 const password = document.getElementById(`password`);
 const confirmPassword = document.getElementById(`confirm-password`);
 
-// Validate each field value
-const formInputs = [email, country, postalCode, password, confirmPassword];
-
 // reset custom message and remove class "invalid"
 function resetInput(input) {
   input.setCustomValidity(``);
@@ -117,6 +114,16 @@ confirmPassword.addEventListener(`input`, () => {
 /* Validate the field after click the submit btn
    if one of the fields is invalid it will throw an error message to 
    the user*/
+
+// Validate each field value
+const formInputs = [
+  { element: email, message: "Email can't leave blank" },
+  { element: country, message: "Country can't leave blank" },
+  { element: postalCode, message: "Postal code can't leave blank" },
+  { element: password, message: "Password can't leave blank" },
+  { element: confirmPassword, message: "Confirm password can't leave blank" },
+];
+
 function validateField(field, message, event) {
   if (!field.validity.valid) {
     field.setCustomValidity(message);
@@ -128,21 +135,9 @@ function validateField(field, message, event) {
 }
 
 form.addEventListener("submit", (event) => {
-  if (!validateField(email, "Email can't leave blank", event)) {
-    return; // stop here if email invalid
-  }
-  if (!validateField(country, "Country can't leave blank", event)) {
-    return; // stop here if country invalid
-  }
-  if (!validateField(postalCode, "Postal code can't leave blank", event)) {
-    return; // stop here if postal code invalid
-  }
-  if (!validateField(password, "Password can't leave blank", event)) {
-    return; // stop here if password invalid
-  }
-  if (
-    !validateField(confirmPassword, "Confirm password can't leave blank", event)
-  ) {
-    return; // stop here if confirm password invalid
+  for (let field of formInputs) {
+    if (!validateField(field.element, field.message, event)) {
+      return; //  stop at the first invalid field
+    }
   }
 });
