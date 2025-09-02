@@ -29,3 +29,9 @@ This project demonstrates how to replace the browser's default validation toolti
 ---
 
 ## 📂 Project Structure
+
+## Setup
+1. Clone this repo:
+   ```bash
+   git clone https://github.com/your-username/form-validation-demo.git
+   cd form-validation-demo
